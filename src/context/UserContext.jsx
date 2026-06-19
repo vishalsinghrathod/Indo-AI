@@ -10,6 +10,7 @@ const [input, setInput] = useState("");
  const [resultData, setResultData] = useState("");
  const [recentPrompt, setRecentPrompt] = useState("");
  const [recentImage, setRecentImage] = useState(null);
+ const [extend, setExtend] = useState(false);
  const typingTimersRef = useRef([]);
  const [prevPrompt, setPrevPrompt] = useState(() => {
    try {
@@ -100,7 +101,9 @@ const [input, setInput] = useState("");
     deletePrompt,
     clearHistory,
     recentImage,
-    setRecentImage
+    setRecentImage,
+    extend,
+    setExtend
   };
 
   return (

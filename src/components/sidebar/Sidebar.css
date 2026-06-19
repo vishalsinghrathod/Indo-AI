@@ -244,8 +244,48 @@
   to { opacity: 1; }
 }
 
+.sidebar-mobile-overlay {
+  display: none;
+}
+
 @media (max-width: 600px) {
-  .sidebar {
-    display: none;
+  .sidebar-mobile-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 5, 8, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    animation: fadeInOverlay 0.25s ease-out;
   }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Offscreen starting point */
+    width: 280px;
+    min-width: 280px;
+    z-index: 9999;
+    transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar.extended {
+    left: 0; /* Slide in on extend */
+    width: 280px;
+    min-width: 280px;
+  }
+
+  .sidebar:not(.extended) {
+    pointer-events: none;
+  }
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

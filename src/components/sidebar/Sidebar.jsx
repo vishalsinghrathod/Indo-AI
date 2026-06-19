@@ -8,15 +8,23 @@ import { dataContext } from "../../context/UserContext";
 import { TbReceiptYuan } from "react-icons/tb";
 
 const Sidebar = () => {
-  const [extend, setExtend] = useState(false);
-  const { sent, prevPrompt, newChat, deletePrompt, clearHistory } = useContext(dataContext);
+  const { extend, setExtend, sent, prevPrompt, newChat, deletePrompt, clearHistory } = useContext(dataContext);
 
   async function loadPrevPromt(prompt) {
     sent(prompt, null, false);
+    if (window.innerWidth <= 600) {
+      setExtend(false);
+    }
   }
 
   return (
     <>
+      {extend && (
+        <div 
+          className="sidebar-mobile-overlay" 
+          onClick={() => setExtend(false)} 
+        />
+      )}
       <div className={`sidebar ${extend ? "extended" : ""}`}>
         <div className="menu-icon-container">
           <GiHamburgerMenu
@@ -31,6 +39,9 @@ const Sidebar = () => {
           className="newChat"
           onClick={() => {
             newChat();
+            if (window.innerWidth <= 600) {
+              setExtend(false);
+            }
           }}
           title="New Chat"
         >

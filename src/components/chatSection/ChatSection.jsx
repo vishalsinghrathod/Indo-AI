@@ -6,6 +6,7 @@ import { dataContext } from "../../context/UserContext";
 import user from "../../assets/user.png";
 import ai from "../../assets/ai.png";
 import { FaRegCopy, FaVolumeUp, FaVolumeMute, FaMicrophone, FaCamera, FaTimes } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const formatResponse = (text) => {
   if (!text) return "";
@@ -19,7 +20,7 @@ const formatResponse = (text) => {
 };
 
 const ChatSection = ({ userName }) => {
-  let { sent, input, setInput, showResult, resultData, recentPrompt, loading, recentImage } =
+  let { sent, input, setInput, showResult, resultData, recentPrompt, loading, recentImage, extend, setExtend } =
     useContext(dataContext);
 
   const [isListening, setIsListening] = useState(false);
@@ -137,9 +138,14 @@ const ChatSection = ({ userName }) => {
     <>
       <div className="chatSection">
         <div className="chatHeader">
-          <div className="header-brand">
-            <span className="brand-logo">✨</span>
-            <span className="brand-text">Indo AI</span>
+          <div className="header-brand-wrapper">
+            <button className="hamburger-btn" onClick={() => setExtend(true)} title="Open Menu">
+              <GiHamburgerMenu />
+            </button>
+            <div className="header-brand">
+              <span className="brand-logo">✨</span>
+              <span className="brand-text">Indo AI</span>
+            </div>
           </div>
           <Darkmode />
         </div>
