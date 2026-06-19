@@ -1,0 +1,251 @@
+.sidebar {
+  padding: 24px 14px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  color: var(--color);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 76px;
+  min-width: 76px;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: none;
+  position: relative;
+}
+
+.sidebar.extended {
+  width: 260px;
+  min-width: 260px;
+}
+
+.menu-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+#hamburger {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: var(--color-secondary);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#hamburger:hover {
+  color: var(--color);
+  transform: scale(1.1);
+}
+
+.newChat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: rgba(100, 116, 139, 0.08);
+  border: 1px solid var(--border-color);
+  color: var(--color);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.sidebar.extended .newChat {
+  width: 100%;
+  padding: 0 20px;
+  justify-content: flex-start;
+}
+
+.newChat:hover {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 15px var(--accent-glow-strong);
+}
+
+.newChat:hover svg {
+  color: #ffffff;
+}
+
+.newChat svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.sidebar-text {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s ease, max-width 0.25s ease;
+  text-overflow: ellipsis;
+}
+
+.sidebar.extended .sidebar-text {
+  opacity: 1;
+  max-width: 160px;
+  margin-left: 12px;
+}
+
+.recent-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.recent-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-secondary);
+  font-weight: 700;
+  padding-left: 10px;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 24px;
+  transition: all 0.25s ease;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+}
+
+.sidebar.extended .recent-wrapper {
+  width: 100%;
+}
+
+.recent-wrapper:hover {
+  background-color: rgba(100, 116, 139, 0.12);
+}
+
+.recent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sidebar.extended .recent {
+  padding: 0 0 0 20px;
+  justify-content: flex-start;
+}
+
+.recent svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-secondary);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.recent-wrapper:hover svg {
+  color: var(--color);
+}
+
+.sidebar.extended .recent-wrapper:hover .recent {
+  transform: translateX(4px);
+  transition: transform 0.2s ease;
+}
+
+.delete-icon {
+  background: transparent;
+  border: none;
+  color: var(--color-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.recent-wrapper:hover .delete-icon {
+  opacity: 1;
+}
+
+.delete-icon:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.delete-icon svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: inherit !important;
+}
+
+.clear-history-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 20px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  cursor: pointer;
+  margin-top: auto;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  animation: fadeIn 0.3s ease-out;
+  width: 100%;
+}
+
+.clear-history-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.clear-history-btn svg {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+}
