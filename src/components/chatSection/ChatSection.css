@@ -400,6 +400,7 @@
   justify-content: center;
   cursor: not-allowed;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
 .send-button.active {
@@ -666,5 +667,17 @@
 
   .input-box-wrapper input {
     font-size: 14px;
+  }
+
+  .send-button, .mic-button, .attach-button {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  .send-button svg, .mic-button svg, .attach-button svg {
+    width: 14px;
+    height: 14px;
   }
 }
