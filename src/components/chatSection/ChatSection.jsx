@@ -31,6 +31,8 @@ const ChatSection = ({ userName }) => {
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
+  const topSectionRef = useRef(null);
+
   const suggestions = [
     { text: "Help me design a premium dark theme dashboard UI", icon: "🎨" },
     { text: "Explain quantum computing in simple terms", icon: "💡" },
@@ -46,6 +48,13 @@ const ChatSection = ({ userName }) => {
   // useEffect(() => {
   //   scrollToBottom();
   // }, [currentMessages, loading]);
+
+  useEffect(() => {
+  if (topSectionRef.current) {
+    topSectionRef.current.scrollTop =
+      topSectionRef.current.scrollHeight;
+  }
+}, [currentMessages, loading]);
 
   // Stop speaking when unmounted
   useEffect(() => {
@@ -165,8 +174,8 @@ const ChatSection = ({ userName }) => {
           </div>
           <Darkmode />
         </div>
-
-        <div className="topsection">
+   
+        <div className="topsection" ref={topSectionRef}>
           {currentMessages.length === 0 ? (
             <div className="initial-screen">
               <div className="headings">
