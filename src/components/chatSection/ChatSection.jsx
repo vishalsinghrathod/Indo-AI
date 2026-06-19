@@ -39,13 +39,13 @@ const ChatSection = ({ userName }) => {
   ];
 
   // Auto scroll to bottom when new messages load or stream
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [currentMessages, loading]);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [currentMessages, loading]);
 
   // Stop speaking when unmounted
   useEffect(() => {
