@@ -12,32 +12,75 @@ function App() {
     const handleResize = () => {
       const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
       document.documentElement.style.setProperty("--viewport-height", `${vh}px`);
+      // Scroll to 0,0 on resize (e.g. keyboard close)
+      window.scrollTo(0, 0);
+      if (document.body) {
+        document.body.scrollTop = 0;
+      }
     };
 
     const handleScroll = () => {
-      // Prevent body/document scroll on mobile from pushing elements off screen
+      // Force visual/layout viewport scroll to (0, 0)
       window.scrollTo(0, 0);
+      if (document.body) {
+        document.body.scrollTop = 0;
+      }
     };
 
     if (window.visualViewport) {
       window.visualViewport.addEventListener("resize", handleResize);
-      window.visualViewport.addEventListener("scroll", handleResize);
+      window.visualViewport.addEventListener("scroll", handleScroll);
     }
     
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll);
+
+    const handleFocusIn = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          if (document.body) {
+            document.body.scrollTop = 0;
+          }
+        }, 80);
+      }
+    };
+
+    const handleFocusOut = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          if (document.body) {
+            document.body.scrollTop = 0;
+          }
+        }, 80);
+      }
+    };
+
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("focusout", handleFocusOut);
     
     handleResize();
 
     return () => {
       if (window.visualViewport) {
         window.visualViewport.removeEventListener("resize", handleResize);
-        window.visualViewport.removeEventListener("scroll", handleResize);
+        window.visualViewport.removeEventListener("scroll", handleScroll);
       }
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("focusin", handleFocusIn);
+      document.removeEventListener("focusout", handleFocusOut);
     };
   }, []);
+
+  useEffect(() => {
+    // Reset scroll when transitioning from NameModal to ChatSection
+    window.scrollTo(0, 0);
+    if (document.body) {
+      document.body.scrollTop = 0;
+    }
+  }, [userName]);
 
   return (
     <>
