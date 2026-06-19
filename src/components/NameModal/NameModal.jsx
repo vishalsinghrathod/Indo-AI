@@ -6,6 +6,10 @@ const NameModal = ({ onSubmit }) => {
 
   function handleSubmit() {
     if (name.trim() !== "") {
+      // Blur the input to hide the keyboard and restore viewport before transition
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
       onSubmit(name.trim());
     } else {
       alert("Name is require!")
@@ -22,6 +26,11 @@ const NameModal = ({ onSubmit }) => {
           placeholder="Your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
         />
         <button onClick={handleSubmit}>Continue</button>
       </div>

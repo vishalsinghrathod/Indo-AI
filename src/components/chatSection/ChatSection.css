@@ -1,7 +1,7 @@
 .chatSection {
   height: 100vh;
-  height: var(--viewport-height, 100dvh);
-  max-height: var(--viewport-height, 100dvh);
+  height: var(--viewport-height, 100%);
+  max-height: var(--viewport-height, 100%);
   background-color: var(--background-color);
   flex: 1;
   display: flex;

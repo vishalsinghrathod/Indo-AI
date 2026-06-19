@@ -76,10 +76,22 @@ function App() {
 
   useEffect(() => {
     // Reset scroll when transitioning from NameModal to ChatSection
-    window.scrollTo(0, 0);
-    if (document.body) {
-      document.body.scrollTop = 0;
-    }
+    const reset = () => {
+      window.scrollTo(0, 0);
+      if (document.body) {
+        document.body.scrollTop = 0;
+      }
+    };
+    
+    reset();
+    
+    // Multiple resets to catch keyboard closure viewport restoration
+    const intervals = [50, 100, 200, 300, 500];
+    const timers = intervals.map(delay => setTimeout(reset, delay));
+    
+    return () => {
+      timers.forEach(clearTimeout);
+    };
   }, [userName]);
 
   return (
