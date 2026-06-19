@@ -1,5 +1,6 @@
 .chatSection {
   height: 100vh;
+  height: 100dvh;
   background-color: var(--background-color);
   flex: 1;
   display: flex;
@@ -652,7 +653,11 @@
   }
 
   .bottomsection {
-    padding: 16px 12px;
+    padding: 12px 12px calc(24px + env(safe-area-inset-bottom)) 12px;
+  }
+
+  .footer-disclaimer {
+    display: none;
   }
 
   .input-box-wrapper {
