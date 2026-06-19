@@ -8,10 +8,10 @@ import { dataContext } from "../../context/UserContext";
 import { TbReceiptYuan } from "react-icons/tb";
 
 const Sidebar = () => {
-  const { extend, setExtend, sent, prevPrompt, newChat, deletePrompt, clearHistory } = useContext(dataContext);
+  const { extend, setExtend, prevPrompt, newChat, deletePrompt, clearHistory, loadSession } = useContext(dataContext);
 
-  async function loadPrevPromt(prompt) {
-    sent(prompt, null, false);
+  async function loadPrevPromt(session) {
+    loadSession(session);
     if (window.innerWidth <= 600) {
       setExtend(false);
     }
@@ -60,10 +60,10 @@ const Sidebar = () => {
                     onClick={() => {
                       loadPrevPromt(item);
                     }}
-                    title={item}
+                    title={item.title || item}
                   >
                     <FaRegMessage />
-                    <span className="sidebar-text">{item}</span>
+                    <span className="sidebar-text">{item.title || item}</span>
                   </div>
                   {extend && (
                     <button

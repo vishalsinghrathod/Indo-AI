@@ -20,14 +20,16 @@ const formatResponse = (text) => {
 };
 
 const ChatSection = ({ userName }) => {
-  let { sent, input, setInput, showResult, resultData, recentPrompt, loading, recentImage, extend, setExtend } =
+  let { sent, input, setInput, loading, extend, setExtend, currentMessages } =
     useContext(dataContext);
 
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentSpeakingText, setCurrentSpeakingText] = useState("");
   const [imageFile, setImageFile] = useState(null);
   
   const fileInputRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   const suggestions = [
     { text: "Help me design a premium dark theme dashboard UI", icon: "🎨" },
@@ -36,33 +38,47 @@ const ChatSection = ({ userName }) => {
     { text: "Give me 5 creative ideas for a personal project portfolio", icon: "🚀" }
   ];
 
-  // Stop speaking when prompt changes or component unmounts
+  // Auto scroll to bottom when new messages load or stream
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-    }
+    scrollToBottom();
+  }, [currentMessages, loading]);
+
+  // Stop speaking when unmounted
+  useEffect(() => {
     return () => {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
     };
-  }, [recentPrompt]);
+  }, []);
 
   // Speech Synthesis - Read Aloud function
   const speakText = (text) => {
     if ('speechSynthesis' in window) {
-      if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis.speaking && currentSpeakingText === text) {
         window.speechSynthesis.cancel();
         setIsSpeaking(false);
+        setCurrentSpeakingText("");
       } else {
+        window.speechSynthesis.cancel();
         const cleanText = text.replace(/\*\*/g, "");
         const utterance = new SpeechSynthesisUtterance(cleanText);
         
-        utterance.onend = () => setIsSpeaking(false);
-        utterance.onerror = () => setIsSpeaking(false);
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          setCurrentSpeakingText("");
+        };
+        utterance.onerror = () => {
+          setIsSpeaking(false);
+          setCurrentSpeakingText("");
+        };
         
         setIsSpeaking(true);
+        setCurrentSpeakingText(text);
         window.speechSynthesis.speak(utterance);
       }
     } else {
@@ -151,7 +167,7 @@ const ChatSection = ({ userName }) => {
         </div>
 
         <div className="topsection">
-          {!showResult ? (
+          {currentMessages.length === 0 ? (
             <div className="initial-screen">
               <div className="headings">
                 <span>Hello {userName || "Guest"},</span>
@@ -169,54 +185,71 @@ const ChatSection = ({ userName }) => {
             </div>
           ) : (
             <div className="result-container">
-              <div className="chat-bubble-row user-row">
-                <div className="user-bubble">
-                  {recentImage && (
-                    <div className="chat-image-wrapper">
-                      <img src={recentImage.url} className="chat-sent-image" alt="Uploaded Attachment" />
+              {currentMessages.map((msg, i) => {
+                if (msg.role === "user") {
+                  return (
+                    <div key={i} className="chat-bubble-row user-row">
+                      <div className="user-bubble">
+                        {msg.image && (
+                          <div className="chat-image-wrapper">
+                            <img src={msg.image.url} className="chat-sent-image" alt="Uploaded Attachment" />
+                          </div>
+                        )}
+                        <p>{msg.text}</p>
+                      </div>
+                      <img src={user} className="avatar user-avatar" alt="User" />
                     </div>
-                  )}
-                  <p>{recentPrompt}</p>
-                </div>
-                <img src={user} className="avatar user-avatar" alt="User" />
-              </div>
-
-              <div className="chat-bubble-row ai-row">
-                <img src={ai} className="avatar ai-avatar" alt="AI" />
-                <div className="ai-bubble">
-                  {loading ? (
+                  );
+                } else {
+                  return (
+                    <div key={i} className="chat-bubble-row ai-row">
+                      <img src={ai} className="avatar ai-avatar" alt="AI" />
+                      <div className="ai-bubble">
+                        <div className="response-content">
+                          <p className="response-text">{formatResponse(msg.text)}</p>
+                          
+                          {msg.text && (
+                            <div className="ai-actions-row">
+                              <button 
+                                className={`audio-btn ${isSpeaking && currentSpeakingText === msg.text ? 'speaking' : ''}`} 
+                                onClick={() => speakText(msg.text)}
+                                title={isSpeaking && currentSpeakingText === msg.text ? "Stop Speaking" : "Read Aloud"}
+                              >
+                                {isSpeaking && currentSpeakingText === msg.text ? <FaVolumeMute /> : <FaVolumeUp />}
+                              </button>
+                              <button 
+                                className="copy-btn" 
+                                onClick={() => {
+                                  navigator.clipboard.writeText(msg.text);
+                                  alert('Copied to clipboard');
+                                }}
+                                title="Copy Response"
+                              >
+                                <FaRegCopy />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+              
+              {loading && (
+                <div className="chat-bubble-row ai-row">
+                  <img src={ai} className="avatar ai-avatar" alt="AI" />
+                  <div className="ai-bubble">
                     <div className="loader">
                       <div className="shimmer-line line-1"></div>
                       <div className="shimmer-line line-2"></div>
                       <div className="shimmer-line line-3"></div>
                     </div>
-                  ) : (
-                    <div className="response-content">
-                      <p className="response-text">{formatResponse(resultData)}</p>
-                      
-                      <div className="ai-actions-row">
-                        <button 
-                          className={`audio-btn ${isSpeaking ? 'speaking' : ''}`} 
-                          onClick={() => speakText(resultData)}
-                          title={isSpeaking ? "Stop Speaking" : "Read Aloud"}
-                        >
-                          {isSpeaking ? <FaVolumeMute /> : <FaVolumeUp />}
-                        </button>
-                        <button 
-                          className="copy-btn" 
-                          onClick={() => {
-                            navigator.clipboard.writeText(resultData);
-                            alert('Copied to clipboard');
-                          }}
-                          title="Copy Response"
-                        >
-                          <FaRegCopy />
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              </div>
+              )}
+              
+              <div ref={messagesEndRef} />
             </div>
           )}
         </div>
