@@ -5,7 +5,8 @@ html, body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
+  height: var(--viewport-height, 100dvh);
+  max-height: var(--viewport-height, 100dvh);
   overflow: hidden;
 }
 
@@ -21,7 +22,8 @@ html, body {
   display: flex;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
+  height: var(--viewport-height, 100dvh);
+  max-height: var(--viewport-height, 100dvh);
   overflow: hidden;
 }
 
